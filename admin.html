@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Safe Alterplex - Panneau Administration</title>
+    <title>Samsung - Panneau d'Administration</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -14,480 +14,404 @@
         }
 
         body {
-            background-color: #f4f6f8;
-            color: #111;
-            padding: 20px 10px;
+            background-color: #f4f6fc;
+            color: #000;
+            padding-bottom: 40px;
         }
 
+        /* En-tête Admin */
         .admin-header {
-            background: #000;
+            background-color: #1428A0;
             color: #fff;
-            padding: 20px;
-            border-radius: 12px;
+            padding: 20px 15px;
             text-align: center;
-            margin-bottom: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 12px rgba(20, 40, 160, 0.2);
         }
 
         .admin-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 800;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .admin-subtitle {
-            font-size: 12px;
-            color: #ccc;
-            margin-top: 4px;
+        .container {
+            padding: 15px;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        /* Onglets d'administration */
-        .tab-box {
+        /* Onglets de navigation Admin */
+        .admin-tabs {
             display: flex;
             background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 4px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 5px;
+            margin: 15px 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            border: 1px solid #e0e0e0;
         }
 
         .tab-btn {
             flex: 1;
             padding: 10px;
-            border: none;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
             background: transparent;
-            font-size: 13px;
-            font-weight: 800;
-            border-radius: 8px;
+            border: none;
             cursor: pointer;
+            border-radius: 8px;
+            color: #555;
             transition: all 0.2s;
         }
 
         .tab-btn.active {
-            background: #000;
+            background: #1428A0;
             color: #fff;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+        /* Sections des onglets */
+        .admin-section {
+            display: none;
         }
 
-        .stat-card {
-            background: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #e0e0e0;
-            text-align: center;
+        .admin-section.active {
+            display: block;
         }
 
-        .stat-val {
-            font-size: 18px;
-            font-weight: 900;
-            color: #000;
-        }
-
-        .stat-label {
-            font-size: 11px;
-            color: #666;
-            margin-top: 2px;
-        }
-
-        .table-container {
-            background: #fff;
-            border-radius: 12px;
-            border: 1px solid #e0e0e0;
-            padding: 15px;
-            overflow-x: auto;
-        }
-
-        .table-title {
+        .section-heading {
             font-size: 14px;
             font-weight: 800;
+            color: #1428A0;
+            text-transform: uppercase;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
+        /* Cartes de requêtes */
+        .req-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
 
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
+        .req-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 12px;
+            font-size: 13px;
         }
 
-        th {
-            background: #f8f9fa;
-            font-weight: 700;
-            color: #555;
+        .req-info strong {
+            color: #1428A0;
         }
 
-        .badge {
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: 800;
-            display: inline-block;
+        .req-actions {
+            display: flex;
+            gap: 10px;
         }
-
-        .badge-pending { background: #fff3cd; color: #856404; }
-        .badge-approved { background: #d4edda; color: #155724; }
-        .badge-rejected { background: #f8d7da; color: #721c24; }
 
         .btn-action {
-            padding: 6px 10px;
+            flex: 1;
+            padding: 8px;
             border: none;
             border-radius: 6px;
-            font-size: 11px;
-            font-weight: 800;
+            font-weight: 700;
+            font-size: 12px;
             cursor: pointer;
-            margin-right: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
         }
 
-        .btn-approve { background: #28a745; color: #fff; }
-        .btn-reject { background: #dc3545; color: #fff; }
+        .btn-validate {
+            background: #d4edda;
+            color: #155724;
+        }
 
-        .btn-action:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .btn-reject {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .empty-box {
+            background: #fff;
+            border: 1px dashed #ccc;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+        }
+
+        .empty-box i {
+            color: #1428A0;
+            font-size: 24px;
+            margin-bottom: 8px;
         }
     </style>
 </head>
 <body>
 
     <div class="admin-header">
-        <div class="admin-title"><i class="fas fa-user-shield"></i> Panneau d'Administration</div>
-        <div class="admin-subtitle">Gestion des Recharges, Retraits & Affiliation</div>
+        <div class="admin-title"><i class="fas fa-shield-halved"></i> Samsung - Gestion Administrative</div>
     </div>
 
-    <!-- Navigation des Onglets -->
-    <div class="tab-box">
-        <button class="tab-btn active" id="btnTabRecharges" onclick="switchAdminTab('recharges')">
-            <i class="fas fa-wallet"></i> Recharges
-        </button>
-        <button class="tab-btn" id="btnTabRetraits" onclick="switchAdminTab('retraits')">
-            <i class="fas fa-money-bill-transfer"></i> Retraits
-        </button>
-    </div>
-
-    <!-- Statistiques rapides -->
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-val" id="pendingCount">0</div>
-            <div class="stat-label">En attente</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-val" id="totalValidated">0 FC</div>
-            <div class="stat-label">Total Validé</div>
-        </div>
-    </div>
-
-    <!-- Tableau de Gestion -->
-    <div class="table-container">
-        <div class="table-title" id="tableTitle">
-            <i class="fas fa-list-check"></i> Demandes de Recharges
+    <div class="container">
+        <!-- Onglets -->
+        <div class="admin-tabs">
+            <button class="tab-btn active" onclick="switchTab('recharges', this)">Recharges</button>
+            <button class="tab-btn" onclick="switchTab('withdrawals', this)">Retraits</button>
+            <button class="tab-btn" onclick="switchTab('users', this)">Utilisateurs</button>
         </div>
 
-        <table>
-            <thead id="tableHeader">
-                <!-- En-tête injecté dynamiquement -->
-            </thead>
-            <tbody id="adminTableBody">
-                <tr>
-                    <td colspan="6" style="text-align: center; color: #888;">Chargement des données...</td>
-                </tr>
-            </tbody>
-        </table>
+        <!-- Section 1 : Recharges en attente -->
+        <div id="section-recharges" class="admin-section active">
+            <div class="section-heading"><i class="fas fa-wallet"></i> Demandes de recharges en attente</div>
+            <div id="rechargesContainer">
+                <div class="empty-box"><i class="fas fa-spinner fa-spin"></i><br>Chargement...</div>
+            </div>
+        </div>
+
+        <!-- Section 2 : Retraits en attente -->
+        <div id="section-withdrawals" class="admin-section">
+            <div class="section-heading"><i class="fas fa-money-bill-transfer"></i> Demandes de retraits en attente</div>
+            <div id="withdrawalsContainer">
+                <div class="empty-box"><i class="fas fa-spinner fa-spin"></i><br>Chargement...</div>
+            </div>
+        </div>
+
+        <!-- Section 3 : Liste des Utilisateurs -->
+        <div id="section-users" class="admin-section">
+            <div class="section-heading"><i class="fas fa-users"></i> Base des utilisateurs</div>
+            <div id="usersContainer">
+                <div class="empty-box"><i class="fas fa-spinner fa-spin"></i><br>Chargement...</div>
+            </div>
+        </div>
     </div>
 
     <script>
         const dbUrl = "https://canal-e4274-default-rtdb.firebaseio.com";
-        let currentTab = "recharges";
 
-        function switchAdminTab(tab) {
-            currentTab = tab;
-            document.getElementById('btnTabRecharges').classList.toggle('active', tab === 'recharges');
-            document.getElementById('btnTabRetraits').classList.toggle('active', tab === 'retraits');
-            
-            if (tab === 'recharges') {
-                document.getElementById('tableTitle').innerHTML = `<i class="fas fa-wallet"></i> Demandes de Recharges`;
-                fetchRecharges();
-            } else {
-                document.getElementById('tableTitle').innerHTML = `<i class="fas fa-money-bill-transfer"></i> Demandes de Retraits`;
-                fetchRetraits();
-            }
+        // Sécurité anti-XSS
+        function escapeHtml(str) {
+            return String(str || '').replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+            });
         }
 
-        // --- 1. GESTION DES RECHARGES ---
-        async function fetchRecharges() {
+        // Gestion des onglets
+        function switchTab(tabName, element) {
+            document.querySelectorAll('.admin-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(`section-${tabName}`).classList.add('active');
+            element.classList.add('active');
+
+            if (tabName === 'recharges') loadAdminRecharges();
+            if (tabName === 'withdrawals') loadAdminWithdrawals();
+            if (tabName === 'users') loadAdminUsers();
+        }
+
+        // --- CHARGEMENT DES RECHARGES ---
+        async function loadAdminRecharges() {
+            const container = document.getElementById('rechargesContainer');
             try {
                 const res = await fetch(`${dbUrl}/recharges.json`);
-                const data = await res.json();
+                const allRecharges = await res.json();
 
-                const thead = document.getElementById('tableHeader');
-                const tbody = document.getElementById('adminTableBody');
-                
-                thead.innerHTML = `
-                    <tr>
-                        <th>Date</th>
-                        <th>Client</th>
-                        <th>Montant</th>
-                        <th>Mode & Destinataire</th>
-                        <th>Statut</th>
-                        <th>Action</th>
-                    </tr>
-                `;
-                tbody.innerHTML = "";
-
-                if (!data) {
-                    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">Aucune demande de recharge.</td></tr>`;
-                    updateStats(0, 0);
+                if (!allRecharges) {
+                    container.innerHTML = `<div class="empty-box"><i class="fas fa-check-circle"></i><br>Aucune demande de recharge.</div>`;
                     return;
                 }
 
-                let pending = 0;
-                let validatedTotal = 0;
-
-                Object.keys(data).forEach(userPhone => {
-                    const userRecharges = data[userPhone];
-                    Object.keys(userRecharges).forEach(rechargeId => {
-                        const item = userRecharges[rechargeId];
-
-                        if (item.status === "En attente") pending++;
-                        if (item.status === "Validé") validatedTotal += (item.amount || 0);
-
-                        const formattedDate = item.createdAt ? new Date(item.createdAt).toLocaleString('fr-FR') : 'N/A';
-                        const isPending = item.status === "En attente";
-
-                        let badge = `<span class="badge badge-pending">En attente</span>`;
-                        if (item.status === "Validé") badge = `<span class="badge badge-approved">Validé</span>`;
-                        if (item.status === "Rejeté") badge = `<span class="badge badge-rejected">Rejeté</span>`;
-
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${formattedDate}</td>
-                            <td><strong>${item.senderPhone || userPhone}</strong></td>
-                            <td><strong>${(item.amount || 0).toLocaleString('fr-FR')} FC</strong></td>
-                            <td>${item.method || 'Mobile Money'}<br><small>Dest: ${item.recipientPhone || 'N/A'}</small></td>
-                            <td>${badge}</td>
-                            <td>
-                                <button class="btn-action btn-approve" ${!isPending ? 'disabled' : ''} onclick="approveRecharge('${userPhone}', '${rechargeId}', ${item.amount})">
-                                    <i class="fas fa-check"></i>
-                                </button>
-                                <button class="btn-action btn-reject" ${!isPending ? 'disabled' : ''} onclick="rejectRecharge('${userPhone}', '${rechargeId}')">
-                                    <i class="fas fa-xmark"></i>
-                                </button>
-                            </td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                });
-
-                updateStats(pending, validatedTotal);
-
-            } catch (err) {
-                console.error("Erreur de chargement des recharges :", err);
-            }
-        }
-
-        // --- 2. GESTION DES RETRAITS ---
-        async function fetchRetraits() {
-            try {
-                const res = await fetch(`${dbUrl}/retraits.json`);
-                const data = await res.json();
-
-                const thead = document.getElementById('tableHeader');
-                const tbody = document.getElementById('adminTableBody');
-
-                thead.innerHTML = `
-                    <tr>
-                        <th>Date</th>
-                        <th>Client</th>
-                        <th>Montant à envoyer</th>
-                        <th>Compte de Réception</th>
-                        <th>Statut</th>
-                        <th>Action</th>
-                    </tr>
-                `;
-                tbody.innerHTML = "";
-
-                if (!data) {
-                    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">Aucune demande de retrait.</td></tr>`;
-                    updateStats(0, 0);
-                    return;
-                }
-
-                let pending = 0;
-                let validatedTotal = 0;
-
-                Object.keys(data).forEach(userPhone => {
-                    const userRetraits = data[userPhone];
-                    Object.keys(userRetraits).forEach(retraitId => {
-                        const item = userRetraits[retraitId];
-
-                        if (item.status === "En attente") pending++;
-                        if (item.status === "Validé") validatedTotal += (item.amount || 0);
-
-                        const formattedDate = item.createdAt ? new Date(item.createdAt).toLocaleString('fr-FR') : 'N/A';
-                        const isPending = item.status === "En attente";
-
-                        let badge = `<span class="badge badge-pending">En attente</span>`;
-                        if (item.status === "Validé") badge = `<span class="badge badge-approved">Validé</span>`;
-                        if (item.status === "Rejeté") badge = `<span class="badge badge-rejected">Rejeté</span>`;
-
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${formattedDate}</td>
-                            <td><strong>${userPhone}</strong></td>
-                            <td><strong>${(item.amount || 0).toLocaleString('fr-FR')} FC</strong></td>
-                            <td>${item.method || 'Mobile Money'}<br><small>Num: <strong>${item.receiverPhone || userPhone}</strong></small></td>
-                            <td>${badge}</td>
-                            <td>
-                                <button class="btn-action btn-approve" ${!isPending ? 'disabled' : ''} onclick="approveRetrait('${userPhone}', '${retraitId}', ${item.amount})">
-                                    <i class="fas fa-check"></i>
-                                </button>
-                                <button class="btn-action btn-reject" ${!isPending ? 'disabled' : ''} onclick="rejectRetrait('${userPhone}', '${retraitId}', ${item.amount})">
-                                    <i class="fas fa-xmark"></i>
-                                </button>
-                            </td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                });
-
-                updateStats(pending, validatedTotal);
-
-            } catch (err) {
-                console.error("Erreur de chargement des retraits :", err);
-            }
-        }
-
-        // Mettre à jour les compteurs
-        function updateStats(pending, validatedTotal) {
-            document.getElementById('pendingCount').innerText = pending;
-            document.getElementById('totalValidated').innerText = validatedTotal.toLocaleString('fr-FR') + " FC";
-        }
-
-        // --- ACTIONS RECHARGES ---
-        async function approveRecharge(userPhone, rechargeId, amount) {
-            if (!confirm(`Valider la recharge et créditer ${amount.toLocaleString('fr-FR')} FC à ${userPhone} ?`)) return;
-
-            try {
-                const userRes = await fetch(`${dbUrl}/users/${userPhone}/balance.json`);
-                const currentBalance = (await userRes.json()) || 0;
-
-                await fetch(`${dbUrl}/users/${userPhone}/balance.json`, { method: 'PUT', body: JSON.stringify(currentBalance + amount) });
-                await fetch(`${dbUrl}/recharges/${userPhone}/${rechargeId}/status.json`, { method: 'PUT', body: JSON.stringify("Validé") });
-
-                await distributeCommissions(userPhone, amount);
-
-                alert("Recharge validée et commissions distribuées !");
-                fetchRecharges();
-            } catch (err) {
-                console.error(err);
-                alert("Erreur de traitement.");
-            }
-        }
-
-        async function rejectRecharge(userPhone, rechargeId) {
-            if (!confirm("Rejeter cette recharge ?")) return;
-            try {
-                await fetch(`${dbUrl}/recharges/${userPhone}/${rechargeId}/status.json`, { method: 'PUT', body: JSON.stringify("Rejeté") });
-                alert("Recharge rejetée.");
-                fetchRecharges();
-            } catch (err) {
-                console.error(err);
-            }
-        }
-
-        // --- ACTIONS RETRAITS ---
-        async function approveRetrait(userPhone, retraitId, amount) {
-            if (!confirm(`Confirmer que vous avez bien payé le retrait de ${amount.toLocaleString('fr-FR')} FC à ${userPhone} ?`)) return;
-
-            try {
-                await fetch(`${dbUrl}/retraits/${userPhone}/${retraitId}/status.json`, { method: 'PUT', body: JSON.stringify("Validé") });
-                alert("Retrait marqué comme Validé.");
-                fetchRetraits();
-            } catch (err) {
-                console.error(err);
-                alert("Erreur lors de la validation du retrait.");
-            }
-        }
-
-        async function rejectRetrait(userPhone, retraitId, amount) {
-            if (!confirm(`Rejeter ce retrait et rembourser ${amount.toLocaleString('fr-FR')} FC sur le solde de ${userPhone} ?`)) return;
-
-            try {
-                // 1. Marquer comme Rejeté
-                await fetch(`${dbUrl}/retraits/${userPhone}/${retraitId}/status.json`, { method: 'PUT', body: JSON.stringify("Rejeté") });
-
-                // 2. Rembourser l'utilisateur sur son solde
-                const userRes = await fetch(`${dbUrl}/users/${userPhone}/balance.json`);
-                const currentBalance = (await userRes.json()) || 0;
-
-                await fetch(`${dbUrl}/users/${userPhone}/balance.json`, { method: 'PUT', body: JSON.stringify(currentBalance + amount) });
-
-                alert("Retrait rejeté et montant remboursé au solde du client.");
-                fetchRetraits();
-            } catch (err) {
-                console.error(err);
-                alert("Erreur lors du rejet du retrait.");
-            }
-        }
-
-        // --- SYSTEME DE COMMISSIONS (22%, 3%, 1%) ---
-        async function distributeCommissions(userPhone, amount) {
-            try {
-                const allUsersRes = await fetch(`${dbUrl}/users.json`);
-                const allUsers = await allUsersRes.json();
-                if (!allUsers) return;
-
-                const currentUser = allUsers[userPhone];
-                if (!currentUser || !currentUser.referredBy) return;
-
-                // LV1 (22%)
-                const parentLV1 = Object.keys(allUsers).find(ph => (allUsers[ph].inviteCode || "").toLowerCase() === currentUser.referredBy.toLowerCase());
-                if (parentLV1) {
-                    const comm1 = Math.round(amount * 0.22);
-                    await fetch(`${dbUrl}/users/${parentLV1}/balance.json`, { method: 'PUT', body: JSON.stringify((allUsers[parentLV1].balance || 0) + comm1) });
-
-                    // LV2 (3%)
-                    if (allUsers[parentLV1].referredBy) {
-                        const parentLV2 = Object.keys(allUsers).find(ph => (allUsers[ph].inviteCode || "").toLowerCase() === allUsers[parentLV1].referredBy.toLowerCase());
-                        if (parentLV2) {
-                            const comm2 = Math.round(amount * 0.03);
-                            await fetch(`${dbUrl}/users/${parentLV2}/balance.json`, { method: 'PUT', body: JSON.stringify((allUsers[parentLV2].balance || 0) + comm2) });
-
-                            // LV3 (1%)
-                            if (allUsers[parentLV2].referredBy) {
-                                const parentLV3 = Object.keys(allUsers).find(ph => (allUsers[ph].inviteCode || "").toLowerCase() === allUsers[parentLV2].referredBy.toLowerCase());
-                                if (parentLV3) {
-                                    const comm3 = Math.round(amount * 0.01);
-                                    await fetch(`${dbUrl}/users/${parentLV3}/balance.json`, { method: 'PUT', body: JSON.stringify((allUsers[parentLV3].balance || 0) + comm3) });
-                                }
-                            }
+                let html = "";
+                for (const phone in allRecharges) {
+                    const userRecharges = allRecharges[phone];
+                    for (const reqId in userRecharges) {
+                        const item = userRecharges[reqId];
+                        if (item.status === "En attente") {
+                            const date = item.createdAt ? new Date(item.createdAt).toLocaleString('fr-FR') : '';
+                            html += `
+                                <div class="req-card">
+                                    <div class="req-info">
+                                        <div><strong>Téléphone :</strong> ${escapeHtml(phone)}</div>
+                                        <div><strong>Montant :</strong> <span style="color:#1428A0; font-weight:800;">${Number(item.amount).toLocaleString('fr-FR')} FC</span></div>
+                                        <div><strong>Méthode :</strong> ${escapeHtml(item.method)} (Dest: ${escapeHtml(item.recipientPhone)})</div>
+                                        <div><strong>Date :</strong> ${escapeHtml(date)}</div>
+                                    </div>
+                                    <div class="req-actions">
+                                        <button class="btn-action btn-validate" onclick="processRecharge('${phone}', '${reqId}', ${item.amount}, 'Validé')">
+                                            <i class="fas fa-check"></i> Valider
+                                        </button>
+                                        <button class="btn-action btn-reject" onclick="processRecharge('${phone}', '${reqId}', ${item.amount}, 'Rejeté')">
+                                            <i class="fas fa-times"></i> Rejeter
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
                         }
                     }
                 }
+                container.innerHTML = html || `<div class="empty-box"><i class="fas fa-check-circle"></i><br>Aucune recharge en attente.</div>`;
             } catch (err) {
-                console.error("Erreur commission:", err);
+                container.innerHTML = `<div class="empty-box" style="color:red;">Erreur de chargement</div>`;
             }
         }
 
-        window.onload = () => {
-            fetchRecharges();
-            setInterval(() => {
-                if (currentTab === 'recharges') fetchRecharges();
-                else fetchRetraits();
-            }, 10000);
-        };
+        // Traiter une recharge (Valider / Rejeter)
+        async function processRecharge(phone, reqId, amount, status) {
+            if (!confirm(`Confirmer le statut "${status}" pour cette recharge ?`)) return;
+
+            try {
+                // 1. Mettre à jour le statut de la demande
+                await fetch(`${dbUrl}/recharges/${encodeURIComponent(phone)}/${reqId}/status.json`, {
+                    method: 'PUT',
+                    body: JSON.stringify(status)
+                });
+
+                // 2. Si validé, ajouter le montant au solde de l'utilisateur
+                if (status === "Validé") {
+                    const userRes = await fetch(`${dbUrl}/users/${encodeURIComponent(phone)}/balance.json`);
+                    const currentBalance = await userRes.json() || 0;
+                    const newBalance = currentBalance + Number(amount);
+
+                    await fetch(`${dbUrl}/users/${encodeURIComponent(phone)}/balance.json`, {
+                        method: 'PUT',
+                        body: JSON.stringify(newBalance)
+                    });
+                }
+
+                alert("Opération effectuée avec succès !");
+                loadAdminRecharges();
+            } catch (err) {
+                alert("Erreur lors de la mise à jour.");
+            }
+        }
+
+        // --- CHARGEMENT DES RETRAITS ---
+        async function loadAdminWithdrawals() {
+            const container = document.getElementById('withdrawalsContainer');
+            try {
+                const res = await fetch(`${dbUrl}/withdrawals.json`);
+                const allWithdrawals = await res.json();
+
+                if (!allWithdrawals) {
+                    container.innerHTML = `<div class="empty-box"><i class="fas fa-check-circle"></i><br>Aucune demande de retrait.</div>`;
+                    return;
+                }
+
+                let html = "";
+                for (const phone in allWithdrawals) {
+                    const userWds = allWithdrawals[phone];
+                    for (const reqId in userWds) {
+                        const item = userWds[reqId];
+                        if (item.status === "En attente") {
+                            const date = item.createdAt ? new Date(item.createdAt).toLocaleString('fr-FR') : '';
+                            html += `
+                                <div class="req-card">
+                                    <div class="req-info">
+                                        <div><strong>Téléphone :</strong> ${escapeHtml(phone)}</div>
+                                        <div><strong>Montant demandé :</strong> <span style="color:#1428A0; font-weight:800;">${Number(item.amount).toLocaleString('fr-FR')} FC</span></div>
+                                        <div><strong>Net à recevoir (après 6%) :</strong> ${Number(item.netAmount).toLocaleString('fr-FR')} FC</div>
+                                        <div><strong>Date :</strong> ${escapeHtml(date)}</div>
+                                    </div>
+                                    <div class="req-actions">
+                                        <button class="btn-action btn-validate" onclick="processWithdrawal('${phone}', '${reqId}', ${item.amount}, 'Validé')">
+                                            <i class="fas fa-check"></i> Valider (Payé)
+                                        </button>
+                                        <button class="btn-action btn-reject" onclick="processWithdrawal('${phone}', '${reqId}', ${item.amount}, 'Rejeté')">
+                                            <i class="fas fa-times"></i> Rejeter (Rembourser)
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }
+                }
+                container.innerHTML = html || `<div class="empty-box"><i class="fas fa-check-circle"></i><br>Aucun retrait en attente.</div>`;
+            } catch (err) {
+                container.innerHTML = `<div class="empty-box" style="color:red;">Erreur de chargement</div>`;
+            }
+        }
+
+        // Traiter un retrait
+        async function processWithdrawal(phone, reqId, amount, status) {
+            if (!confirm(`Confirmer l'action "${status}" ?`)) return;
+
+            try {
+                await fetch(`${dbUrl}/withdrawals/${encodeURIComponent(phone)}/${reqId}/status.json`, {
+                    method: 'PUT',
+                    body: JSON.stringify(status)
+                });
+
+                // Si rejeté, on recrédite le solde de l'utilisateur
+                if (status === "Rejeté") {
+                    const userRes = await fetch(`${dbUrl}/users/${encodeURIComponent(phone)}/balance.json`);
+                    const currentBalance = await userRes.json() || 0;
+                    const newBalance = currentBalance + Number(amount);
+
+                    await fetch(`${dbUrl}/users/${encodeURIComponent(phone)}/balance.json`, {
+                        method: 'PUT',
+                        body: JSON.stringify(newBalance)
+                    });
+                }
+
+                alert("Traitement effectué !");
+                loadAdminWithdrawals();
+            } catch (err) {
+                alert("Erreur lors de l'opération.");
+            }
+        }
+
+        // --- CHARGEMENT DES UTILISATEURS ---
+        async function loadAdminUsers() {
+            const container = document.getElementById('usersContainer');
+            try {
+                const res = await fetch(`${dbUrl}/users.json`);
+                const users = await res.json();
+
+                if (!users) {
+                    container.innerHTML = `<div class="empty-box">Aucun utilisateur enregistré.</div>`;
+                    return;
+                }
+
+                let html = "";
+                for (const phone in users) {
+                    const u = users[phone];
+                    const balance = Number(u.balance || 0).toLocaleString('fr-FR');
+                    const cardInfo = u.paymentCard && u.paymentCard.isBound 
+                        ? `${escapeHtml(u.paymentCard.holderName)} (${escapeHtml(u.paymentCard.cardNumber)})` 
+                        : 'Non liée';
+
+                    html += `
+                        <div class="req-card">
+                            <div class="req-info">
+                                <div><strong>Téléphone :</strong> ${escapeHtml(phone)}</div>
+                                <div><strong>Solde :</strong> <span style="color:#1428A0; font-weight:800;">${balance} FC</span></div>
+                                <div><strong>Carte/Compte :</strong> ${cardInfo}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+                container.innerHTML = html;
+            } catch (err) {
+                container.innerHTML = `<div class="empty-box" style="color:red;">Erreur de chargement des utilisateurs</div>`;
+            }
+        }
+
+        // Charger par défaut l'onglet recharges au démarrage
+        window.addEventListener('DOMContentLoaded', loadAdminRecharges);
     </script>
 </body>
 </html>
